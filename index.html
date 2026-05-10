@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematica | Master Mathematics. Build Your Future.</title>
+    <style>
+        /* --- DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            --primary: #0D1B2A;
+            --accent: #1E90FF;
+            --vivid-teal: #00C9A7;
+            --highlight: #F4C542;
+            --bg-light: #F8F9FA;
+            --text-dark: #1A1A2E;
+            --text-light: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- REUSABLE COMPONENTS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 5px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--highlight);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #e5b830;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(244, 197, 66, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--text-light);
+            color: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-light);
+            color: var(--primary);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--primary);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: var(--primary);
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-light);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-light);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Animated Math Symbols */
+        .math-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .symbol {
+            position: absolute;
+            font-family: serif;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 4rem;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.08; }
+            90% { opacity: 0.08; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- SOCIAL PROOF BAR --- */
+        .social-proof {
+            background: #08111a;
+            padding: 30px 0;
+            color: var(--text-light);
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+        }
+
+        .proof-item h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .proof-item p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-card {
+            background: white;
+            padding: 40px;
+            border-left: 5px solid var(--accent);
+            box-shadow: var(--shadow);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .about-card blockquote {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .diff-list {
+            list-style: none;
+        }
+
+        .diff-list li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .diff-list li::before {
+            content: "✓";
+            color: var(--vivid-teal);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- SUBJECTS GRID --- */
+        .subjects {
+            background: #f1f3f5;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .subject-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .subject-card h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        /* --- HOW IT WORKS --- */
+        .process-grid {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .process-grid::after {
+            content: "";
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #ddd;
+            z-index: 1;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-num {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0 auto 20px;
+            border: 8px solid var(--bg-light);
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials {
+            background: var(--primary);
+            color: white;
+        }
+
+        .testimonials .section-title {
+            color: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stars {
+            color: var(--highlight);
+            margin-bottom: 15px;
+        }
+
+        .student-info {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student-name {
+            font-weight: 700;
+        }
+
+        .student-grade {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* --- PRICING --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .price-card {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .price-card.popular {
+            border: 2px solid var(--accent);
+            transform: scale(1.05);
+            z-index: 5;
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .price-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .price-amount { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 30px; }
+        .price-features { list-style: none; margin-bottom: 30px; text-align: left; }
+        .price-features li { margin-bottom: 12px; font-size: 0.95rem; }
+        .price-features li::before { content: "•"; color: var(--accent); margin-right: 10px; font-weight: bold; }
+
+        /* --- FAQ SECTION --- */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .faq-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .faq-icon {
+            transition: var(--transition);
+        }
+
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #fafafa;
+        }
+
+        .faq-content {
+            padding: 0 25px 20px;
+            opacity: 0.8;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-item.active .faq-body {
+            max-height: 200px;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B263B 100%);
+            color: white;
+        }
+
+        .contact .section-title { color: white; }
+
+        .contact-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 50px;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: 2px solid var(--accent);
+        }
+
+        #success-msg {
+            display: none;
+            background: var(--vivid-teal);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #050a11;
+            color: white;
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand h2 { font-size: 1.8rem; margin-bottom: 15px; }
+        .footer-brand p { opacity: 0.6; }
+
+        .footer-links h4 { margin-bottom: 20px; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 5px; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: white; opacity: 0.7; text-decoration: none; transition: var(--transition); }
+        .footer-links a:hover { opacity: 1; color: var(--accent); }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-circle {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-circle:hover { background: var(--accent); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 3.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .price-card.popular { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+            .hero h1 { font-size: 2.8rem; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.5s;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+            .proof-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .process-grid { flex-direction: column; gap: 40px; }
+            .process-grid::after { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">MATHE<span>MATICA</span></a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#about">Why Us</a></li>
+                <li><a href="#subjects">Subjects</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="btn btn-primary" style="padding: 10px 20px;">Get Started</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="math-bg" id="math-bg"></div>
+        <div class="container">
+            <div class="hero-content reveal">
+                <h1>Mathematics Made Understandable.</h1>
+                <p>From algebra to calculus — structured lessons designed for high school and university students to build real confidence and academic excellence.</p>
+                <div class="hero-btns">
+                    <a href="#pricing" class="btn btn-primary">Start Learning</a>
+                    <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF BAR -->
+    <div class="social-proof">
+        <div class="container">
+            <div class="proof-grid">
+                <div class="proof-item">
+                    <h3>500+</h3>
+                    <p>Students Helped</p>
+                </div>
+                <div class="proof-item">
+                    <h3>95%</h3>
+                    <p>Pass Rate</p>
+                </div>
+                <div class="proof-item">
+                    <h3>Gr. 8-12</h3>
+                    <p>Curriculum Expert</p>
+                </div>
+                <div class="proof-item">
+                    <h3>1-on-1</h3>
+                    <p>Personal Focus</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="container">
+        <div class="about-grid">
+            <div class="reveal">
+                <div class="about-card">
+                    <blockquote>"We don't just teach you how to solve equations; we teach you how to think logically so that no problem is ever truly 'new'."</blockquote>
+                    <p>— Founder of Mathematica</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Why students choose Mathematica</h2>
+                <ul class="diff-list">
+                    <li><strong>Conceptual Depth:</strong> We focus on the 'why', not just the 'how', making memorisation unnecessary.</li>
+                    <li><strong>Exam Technique:</strong> Learn how to decode questions and manage time effectively during high-pressure finals.</li>
+                    <li><strong>Real Feedback:</strong> Detailed marking of your practice work so you know exactly where to improve.</li>
+                    <li><strong>University Ready:</strong> Bridging the gap between school syllabus and first-year university demands.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUBJECTS SECTION -->
+    <section id="subjects" class="subjects">
+        <div class="container">
+            <h2 class="section-title reveal">Core Topics We Master</h2>
+            <div class="subject-grid">
+                <!-- Card 1 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">x²</span>
+                    <h3>Algebra</h3>
+                    <p>Mastering expressions, equations, and inequalities from basic to advanced levels.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">∫</span>
+                    <h3>Calculus</h3>
+                    <p>Deep dives into limits, differentiation, and integration for school and university.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">△</span>
+                    <h3>Trigonometry</h3>
+                    <p>Simplifying identities, reduction formulae, and 3D modeling with ease.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">i</span>
+                    <h3>Complex Numbers</h3>
+                    <p>Understanding the imaginary plane, Argand diagrams, and polar forms.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">[M]</span>
+                    <h3>Linear Algebra</h3>
+                    <p>Vectors, matrices, and transformations for first-year engineering and science.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="subject-card reveal">
+                    <span class="subject-icon">σ</span>
+                    <h3>Statistics</h3>
+                    <p>Probability distributions, variance, and data analysis made logical.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="container">
+        <h2 class="section-title reveal">Your Path to Excellence</h2>
+        <div class="process-grid">
+            <div class="step reveal">
+                <div class="step-num">1</div>
+                <h3>Book a Session</h3>
+                <p>Choose a time that fits your schedule via our simple booking portal.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">2</div>
+                <h3>Personalised Plan</h3>
+                <p>We identify your gaps and build a custom roadmap for your syllabus.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">3</div>
+                <h3>See Real Results</h3>
+                <p>Gain the confidence to tackle any exam and watch your grades soar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title reveal">What Our Students Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p>"I went from a 50% to an 85% in my final calculus exam. The way they explain integration just clicked for me!"</p>
+                    <div class="student-info">
+                        <span class="student-name">Sarah Jenkins</span>
+                        <span class="student-grade">Grade 12 Student</span>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p>"Calculus and Linear Algebra were a nightmare in my first semester. Mathematica helped me pass with a distinction."</p>
+                    <div class="student-info">
+                        <span class="student-name">David Mckenzie</span>
+                        <span class="student-grade">University Freshman</span>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p>"The tutors are patient and actually care if you understand. Best decision I made for my academic career."</p>
+                    <div class="student-info">
+                        <span class="student-name">Leila Chen</span>
+                        <span class="student-grade">Grade 11 Student</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="container">
+        <h2 class="section-title reveal">Simple, Transparent Pricing</h2>
+        <div class="pricing-grid">
+            <div class="price-card reveal">
+                <h3>Single Session</h3>
+                <div class="price-amount">R250</div>
+                <ul class="price-features">
+                    <li>1 Hour Focused Session</li>
+                    <li>Topic-specific resources</li>
+                    <li>Exam paper walkthrough</li>
+                    <li>No long-term commitment</li>
+                </ul>
+                <a href="#contact" class="btn btn-secondary" style="color: var(--primary); border-color: var(--primary);">Book Now</a>
+            </div>
+            <div class="price-card popular reveal">
+                <div class="badge">Most Popular</div>
+                <h3>Monthly Package</h3>
+                <div class="price-amount">R900</div>
+                <ul class="price-features">
+                    <li>4 x 1 Hour Sessions</li>
+                    <li>WhatsApp support during week</li>
+                    <li>Custom study roadmap</li>
+                    <li>24/7 Access to practice portal</li>
+                    <li>Save R100 per month</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary">Select Package</a>
+            </div>
+            <div class="price-card reveal">
+                <h3>Exam Intensive</h3>
+                <div class="price-amount">R1500</div>
+                <ul class="price-features">
+                    <li>8 Hours of Tutoring</li>
+                    <li>Past Paper Masterclass</li>
+                    <li>Full Curriculum Review</li>
+                    <li>Priority Scheduling</li>
+                    <li>Mock Exam Included</li>
+                </ul>
+                <a href="#contact" class="btn btn-secondary" style="color: var(--primary); border-color: var(--primary);">Get Ready</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="container reveal">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-header">How do the online sessions work? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">We use a high-definition digital whiteboard. You can see the tutor's writing in real-time, and you'll receive a PDF of all notes made during the session immediately after.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header">Do you cover both IEB and CAPS curricula? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">Yes! We are fully versed in IEB, CAPS, and Cambridge (AS/A Levels) curricula, ensuring our materials match what you see in class.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header">What should I bring to my first session? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">Bring your latest textbook, a notebook, your calculator, and a list of specific problems or topics that have been giving you trouble lately.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header">Can I cancel or reschedule a session? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">Of course. We require at least 24 hours notice for any rescheduling to ensure our tutors' time is respected.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header">Do you offer group sessions? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">Yes, we offer small group sessions (max 4 students) at a reduced rate. Contact us directly for a custom group quote.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header">What happens if I don't see results? <span class="faq-icon">+</span></div>
+                <div class="faq-body"><div class="faq-content">We pride ourselves on our success rate. If you aren't satisfied with the first session, we offer a 100% money-back guarantee.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact">
+        <div class="container reveal">
+            <h2 class="section-title">Ready to Turn Maths Around?</h2>
+            <div class="contact-container">
+                <div id="success-msg">Success! We'll reach out within 24 hours to schedule your session.</div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required placeholder="john@example.com">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>Grade / Year</label>
+                            <input type="text" id="grade" required placeholder="Grade 11">
+                        </div>
+                        <div class="form-group">
+                            <label>Topic of Interest</label>
+                            <select id="topic">
+                                <option>Algebra</option>
+                                <option>Calculus</option>
+                                <option>Trigonometry</option>
+                                <option>University Maths</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Message</label>
+                        <textarea id="message" rows="4" placeholder="Tell us about your challenges..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>MATHE<span>MATICA</span></h2>
+                    <p>Providing world-class mathematics tutoring for the next generation of engineers, scientists, and leaders. Master the subject, build your future.</p>
+                    <div class="social-icons">
+                        <div class="social-circle">f</div>
+                        <div class="social-circle">in</div>
+                        <div class="social-circle">X</div>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#subjects">Subjects</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Mathematica. All rights reserved. Designed for Excellence.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+
+        // 2. Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // 3. Floating Math Symbols Logic
+        const mathBg = document.getElementById('math-bg');
+        const symbols = ['∑', '∫', 'π', '∞', '√', 'Δ', 'θ', 'λ', 'Ω', 'β', 'f(x)', 'lim', 'log'];
+        
+        for (let i = 0; i < 25; i++) {
+            const span = document.createElement('span');
+            span.className = 'symbol';
+            span.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            span.style.left = Math.random() * 100 + '%';
+            span.style.top = Math.random() * 100 + '%';
+            span.style.animationDelay = Math.random() * 20 + 's';
+            span.style.fontSize = (Math.random() * 3 + 2) + 'rem';
+            mathBg.appendChild(span);
+        }
+
+        // 4. Reveal Animations on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // 5. FAQ Accordion Logic
+        document.querySelectorAll('.faq-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 6. Form Submission Handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block';
+            
+            // Scroll to success message
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 7. Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    // Close mobile menu if open
+                    document.getElementById('nav-menu').classList.remove('active');
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
